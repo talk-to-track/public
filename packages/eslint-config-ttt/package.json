@@ -1,0 +1,41 @@
+{
+  "name": "@talk-to-track/eslint-config-ttt",
+  "description": "Talk to Track eslint config",
+  "version": "1.0.0",
+  "author": "Talk to Track",
+  "bugs": {
+    "url": "https://github.com/talk-to-track/public/issues"
+  },
+  "devDependencies": {
+    "fixpack": "2.3.1",
+    "npm-check-updates": "2.13.0",
+    "npm-run-all": "4.1.2",
+    "nsp": "3.1.0"
+  },
+  "homepage": "https://github.com/talk-to-track/public/tree/master/packages/eslint-config-ttt",
+  "keywords": [
+    "config",
+    "eslint",
+    "style",
+    "talk",
+    "to",
+    "track"
+  ],
+  "license": "Unlicense",
+  "main": "index.json",
+  "peerDependencies": {
+    "eslint-config-airbnb": "16.0.0",
+    "eslint-plugin-babel": "4.1.2",
+    "eslint-plugin-flowtype": "2.37.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/talk-to-track/public/tree/master/packages/eslint-config-ttt"
+  },
+  "scripts": {
+    "audit": "nsp check",
+    "check": "npm-run-all --parallel audit fixpack",
+    "fixpack": "fixpack",
+    "outdated": "ncu"
+  }
+}

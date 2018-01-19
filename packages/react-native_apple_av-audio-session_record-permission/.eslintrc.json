@@ -1,0 +1,3 @@
+{
+  "extends": "@talk-to-track/eslint-config-ttt"
+}

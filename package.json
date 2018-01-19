@@ -1,0 +1,48 @@
+{
+  "name": "@talk-to-track/public",
+  "description": "Talk to Track public monorepo",
+  "version": "1.0.0",
+  "author": "Genesant Technologies, Inc.",
+  "bugs": {
+    "url": "https://github.com/talk-to-track/public/issues"
+  },
+  "devDependencies": {
+    "fixpack": "2.3.1",
+    "husky": "0.15.0-beta.16",
+    "lerna": "2.7.1",
+    "npm-check-updates": "2.13.0",
+    "npm-run-all": "4.1.2",
+    "nsp": "3.1.0",
+    "standard-version": "4.3.0",
+    "validate-commit-msg": "2.14.0"
+  },
+  "homepage": "https://github.com/talk-to-track/public",
+  "keywords": [
+    "monorepo",
+    "public",
+    "talk",
+    "to",
+    "track"
+  ],
+  "license": "UNLICENSED",
+  "main": "packages",
+  "private": true,
+  "repository": "https://github.com/talk-to-track/public",
+  "scripts": {
+    "audit:self": "nsp check",
+    "bootstrap": "lerna bootstrap",
+    "check": "npm-run-all check:packages check:self",
+    "check:packages": "lerna run check",
+    "check:self": "npm-run-all --parallel audit:self fixpack:self",
+    "clean": "lerna clean",
+    "commitmsg": "validate-commit-msg",
+    "fixpack:self": "fixpack",
+    "outdated": "npm-run-all outdated:packages outdated:self",
+    "outdated:packages": "lerna run outdated",
+    "outdated:self": "ncu",
+    "release": "standard-version"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
