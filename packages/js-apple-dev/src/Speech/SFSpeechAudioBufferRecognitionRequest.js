@@ -2,7 +2,11 @@
 
 import type { SFSpeechRecognitionRequest } from './SFSpeechRecognitionRequest';
 
-export type SFSpeechAudioBufferRecognitionRequest = {
+type AudioSession = {
   audioSessionDataSourceID?: string,
-  ...SFSpeechRecognitionRequest,
 };
+
+export type SFSpeechAudioBufferRecognitionRequest = (
+  & AudioSession
+  & SFSpeechRecognitionRequest
+);

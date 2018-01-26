@@ -6,6 +6,7 @@
 @interface RNSFSpeechRecognizerRecognitionTaskAudioBuffer ()
 
 @property (nonatomic, strong) NSMutableDictionary *audioEngines;
+@property (nonatomic) BOOL skipError;
 @property (nonatomic, strong) NSMutableDictionary *speechRecognitionRequests;
 @property (nonatomic, strong) NSMutableDictionary *speechRecognitionTasks;
 
@@ -45,6 +46,7 @@ RCT_EXPORT_METHOD(start:(NSString *)id options:(NSDictionary *)options) {
   SFSpeechAudioBufferRecognitionRequest *speechRecognitionRequest = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
   SFSpeechRecognizer *speechRecognizer;
   NSError *error = nil;
+  self.skipError = YES;
 
   if (optionsRecognizerLocaleIdentifier == nil) {
     speechRecognizer = [[SFSpeechRecognizer alloc] init];
@@ -72,15 +74,21 @@ RCT_EXPORT_METHOD(start:(NSString *)id options:(NSDictionary *)options) {
   speechRecognitionRequest.taskHint = (SFSpeechRecognitionTaskHint) optionsRequestTaskHint;
 
   SFSpeechRecognitionTask *speechRecognitionTask = [speechRecognizer recognitionTaskWithRequest:speechRecognitionRequest resultHandler:^(SFSpeechRecognitionResult *speechRecognitionResult, NSError *speechRecognitionError) {
-    if (speechRecognitionError) {
+    if (speechRecognitionError && !self.skipError) {
       [self sendEventWithName:@"taskError" body:@{
         @"id": id,
-        @"value": speechRecognitionError
+        @"value": @{
+          @"code": @(speechRecognitionError.code),
+          @"debugDescription": speechRecognitionError.debugDescription,
+          @"localizedDescription": speechRecognitionError.localizedDescription
+        }
       }];
 
       [self stop:id];
+      return;
     }
 
+    self.skipError = NO;
     NSMutableArray *serializedTranscriptions = [[NSMutableArray alloc] init];
 
     for (SFTranscription *transcription in speechRecognitionResult.transcriptions) {
@@ -88,7 +96,7 @@ RCT_EXPORT_METHOD(start:(NSString *)id options:(NSDictionary *)options) {
       NSMutableArray *serializedTranscriptionSegments = [[NSMutableArray alloc] init];
 
       for (SFTranscriptionSegment *segment in transcription.segments) {
-        [serializedTranscriptions addObject:@{
+        [serializedTranscriptionSegments addObject:@{
           @"alternativeSubstrings": segment.alternativeSubstrings,
           @"confidence": @(segment.confidence),
           @"duration": @(segment.duration),
@@ -119,6 +127,10 @@ RCT_EXPORT_METHOD(start:(NSString *)id options:(NSDictionary *)options) {
       @"id": id,
       @"value": serializedSpeechRecognitionResult
     }];
+
+    if (speechRecognitionResult.isFinal) {
+      [self stop:id];
+    }
   }];
 
   self.audioEngines[id] = audioEngine;
@@ -137,30 +149,31 @@ RCT_EXPORT_METHOD(start:(NSString *)id options:(NSDictionary *)options) {
   AVAudioSession *audioSession = [AVAudioSession sharedInstance];
   AVAudioEngine *audioEngine = self.audioEngines[id];
   SFSpeechAudioBufferRecognitionRequest *speechRecognitionRequest = self.speechRecognitionRequests[id];
-
+  
+  [speechRecognitionRequest endAudio];
   [audioSession setActive:NO error:nil];
-
+  
   if (audioEngine.isRunning) {
-    [audioEngine.inputNode removeTapOnBus:0];
     [audioEngine stop];
-    [speechRecognitionRequest endAudio];
+    [audioEngine.inputNode removeTapOnBus:0];
   }
-
+  
+  [self.audioEngines removeObjectForKey:id];
   [self.speechRecognitionRequests removeObjectForKey:id];
   [self.speechRecognitionTasks removeObjectForKey:id];
 }
 
 RCT_EXPORT_METHOD(cancel:(NSString *)id callback:(RCTResponseSenderBlock)callback) {
+  self.skipError = true;
   SFSpeechRecognitionTask *speechRecognitionTask = self.speechRecognitionTasks[id];
   [speechRecognitionTask cancel];
-  [self stop:id];
   callback(@[]);
 }
 
 RCT_EXPORT_METHOD(finish:(NSString *)id callback:(RCTResponseSenderBlock)callback) {
+  self.skipError = true;
   SFSpeechRecognitionTask *speechRecognitionTask = self.speechRecognitionTasks[id];
   [speechRecognitionTask finish];
-  [self stop:id];
   callback(@[]);
 }
 

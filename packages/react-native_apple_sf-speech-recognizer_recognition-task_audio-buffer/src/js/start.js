@@ -9,31 +9,33 @@ export default (
   id: string,
   req: SFSpeechAudioBufferRecognitionRequest,
   cbResult: (SFSpeechRecognitionResult) => void,
-  cbError: (?Error) => void,
+  cbError: (Error) => void,
 ) => {
   const emitter = new NativeEventEmitter(module);
+  let errorListener;
+  let resultListener;
 
-  const errorListener = (res) => {
+  const errorHandler = (res) => {
     if (res.id === id) {
-      emitter.removeListener(errorListener);
-      emitter.removeListener(resultListener);
+      errorListener.remove();
+      resultListener.remove();
       cbError(res.value);
     }
   };
 
-  const resultListener = (res) => {
+  const resultHandler = (res) => {
     if (res.id === id) {
       if (res.value.isFinal) {
-        emitter.removeListener(errorListener);
-        emitter.removeListener(resultListener);
+        errorListener.remove();
+        resultListener.remove();
       }
 
       cbResult(res.value);
     }
   };
 
-  emitter.addListener('taskError', errorListener);
-  emitter.addListener('taskResult', resultListener);
+  errorListener = emitter.addListener('taskError', errorHandler);
+  resultListener = emitter.addListener('taskResult', resultHandler);
 
   module.start(id, req);
 };

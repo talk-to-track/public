@@ -1,2 +1,4 @@
+*.log
+*.xcworkspace
 node_modules
-xcsuserdata
+xcuserdata
