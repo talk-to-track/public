@@ -1,13 +1,13 @@
 {
   "name": "@talk-to-track/js-apple-dev",
   "description": "Apple dev speech",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "author": "Talk to Track",
   "bugs": {
     "url": "https://github.com/talk-to-track/public/issues"
   },
   "devDependencies": {
-    "@talk-to-track/eslint-config-ttt": "1.0.0",
+    "@talk-to-track/eslint-config-ttt": "1.2.0",
     "babel-eslint": "8.2.1",
     "eslint": "4.16.0",
     "eslint-config-airbnb": "16.1.0",
@@ -30,6 +30,9 @@
   ],
   "license": "UNLICENSED",
   "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/talk-to-track/public/tree/master/packages/js-apple-dev"

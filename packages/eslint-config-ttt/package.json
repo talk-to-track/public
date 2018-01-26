@@ -1,7 +1,7 @@
 {
   "name": "@talk-to-track/eslint-config-ttt",
   "description": "Talk to Track eslint config",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "author": "Talk to Track",
   "bugs": {
     "url": "https://github.com/talk-to-track/public/issues"
@@ -27,6 +27,9 @@
     "eslint-config-airbnb": "16.0.0",
     "eslint-plugin-babel": "4.1.2",
     "eslint-plugin-flowtype": "2.37.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",

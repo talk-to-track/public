@@ -1,14 +1,14 @@
 {
   "name": "@talk-to-track/redux",
   "description": "Talk to Track state management in redux",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "author": "Talk to Track",
   "bugs": {
     "url": "https://github.com/talk-to-track/public/issues"
   },
   "dependencies": {
     "@most/create": "^2.0.0",
-    "@talk-to-track/js-apple-dev": "^1.0.0",
+    "@talk-to-track/js-apple-dev": "1.2.0",
     "immutable": "^4.0.0-rc.9",
     "lodash": "^4.0.0",
     "most": "^1.7.0",
@@ -21,7 +21,7 @@
     "rxjs": "^5.0.0"
   },
   "devDependencies": {
-    "@talk-to-track/eslint-config-ttt": "1.0.0",
+    "@talk-to-track/eslint-config-ttt": "1.2.0",
     "babel-eslint": "8.2.1",
     "eslint": "4.16.0",
     "eslint-config-airbnb": "16.1.0",
@@ -45,6 +45,9 @@
   ],
   "license": "UNLICENSED",
   "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/talk-to-track/public/tree/master/packages/redux"

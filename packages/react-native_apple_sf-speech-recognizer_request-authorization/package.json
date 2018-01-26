@@ -1,16 +1,16 @@
 {
   "name": "@talk-to-track/react-native_apple_sf-speech-recognizer_request-authorization",
   "description": "React native speech recognizer request authorization",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "author": "Talk to Track",
   "bugs": {
     "url": "https://github.com/talk-to-track/public/issues"
   },
   "dependencies": {
-    "@talk-to-track/js-apple-dev": "1.0.0"
+    "@talk-to-track/js-apple-dev": "1.2.0"
   },
   "devDependencies": {
-    "@talk-to-track/eslint-config-ttt": "1.0.0",
+    "@talk-to-track/eslint-config-ttt": "1.2.0",
     "babel-eslint": "8.2.1",
     "eslint": "4.16.0",
     "eslint-config-airbnb": "16.1.0",
@@ -42,6 +42,9 @@
   "main": "src/js/index.js",
   "peerDependencies": {
     "react-native": "*"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",
