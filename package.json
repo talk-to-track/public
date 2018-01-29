@@ -40,7 +40,7 @@
     "outdated": "npm-run-all outdated:packages outdated:self",
     "outdated:packages": "lerna run outdated",
     "outdated:self": "ncu",
-    "publish": "lerna publish --conventional-commits --exact",
+    "publish": "lerna publish --conventional-commits --exact --independent --m 'chore(release): publish'",
     "release": "standard-version"
   },
   "workspaces": [
