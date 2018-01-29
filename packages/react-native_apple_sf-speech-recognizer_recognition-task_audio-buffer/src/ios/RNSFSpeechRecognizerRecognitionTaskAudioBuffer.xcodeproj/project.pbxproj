@@ -7,14 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3CAFCA7D2017BFF900DBDFBF /* RNSFSpeechRecognitionTaskDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFCA7C2017BFF900DBDFBF /* RNSFSpeechRecognitionTaskDelegate.m */; };
 		832C819C1AAF6E1A007FA2F7 /* RNSFSpeechRecognizerRecognitionTaskAudioBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 832C819B1AAF6E1A007FA2F7 /* RNSFSpeechRecognizerRecognitionTaskAudioBuffer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3CA2F7AF1FFFF4240040DD0B /* RNSFSpeechRecognizerRecognitionTaskAudioBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNSFSpeechRecognizerRecognitionTaskAudioBuffer.h; sourceTree = "<group>"; };
-		3CAFCA7B2017BFE900DBDFBF /* RNSFSpeechRecognitionTaskDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNSFSpeechRecognitionTaskDelegate.h; path = "../../../../../../../Dropbox/Private/dev/@talk-to-track/public/packages/react-native_apple_sf-speech-recognizer_recognition-task_audio-buffer/src/ios/RNSFSpeechRecognitionTaskDelegate.h"; sourceTree = "<group>"; };
-		3CAFCA7C2017BFF900DBDFBF /* RNSFSpeechRecognitionTaskDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNSFSpeechRecognitionTaskDelegate.m; sourceTree = "<group>"; };
 		832C81801AAF6DEF007FA2F7 /* libRNSFSpeechRecognizerRecognitionTaskAudioBuffer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNSFSpeechRecognizerRecognitionTaskAudioBuffer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		832C819B1AAF6E1A007FA2F7 /* RNSFSpeechRecognizerRecognitionTaskAudioBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSFSpeechRecognizerRecognitionTaskAudioBuffer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -23,8 +20,6 @@
 		832C81771AAF6DEF007FA2F7 = {
 			isa = PBXGroup;
 			children = (
-				3CAFCA7C2017BFF900DBDFBF /* RNSFSpeechRecognitionTaskDelegate.m */,
-				3CAFCA7B2017BFE900DBDFBF /* RNSFSpeechRecognitionTaskDelegate.h */,
 				3CA2F7AF1FFFF4240040DD0B /* RNSFSpeechRecognizerRecognitionTaskAudioBuffer.h */,
 				832C819B1AAF6E1A007FA2F7 /* RNSFSpeechRecognizerRecognitionTaskAudioBuffer.m */,
 				832C81811AAF6DEF007FA2F7 /* Products */,
@@ -97,7 +92,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3CAFCA7D2017BFF900DBDFBF /* RNSFSpeechRecognitionTaskDelegate.m in Sources */,
 				832C819C1AAF6E1A007FA2F7 /* RNSFSpeechRecognizerRecognitionTaskAudioBuffer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
