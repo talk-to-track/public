@@ -34,11 +34,8 @@ RCT_EXPORT_METHOD(start:(NSString *)id options:(NSDictionary *)options) {
   NSDictionary *optionsRecognizer = [RCTConvert NSDictionary:options[@"speechRecognizer"]];
   NSString *optionsRecognizerLocaleIdentifier = [RCTConvert NSString:optionsRecognizer[@"localeIdentifier"]];
   NSDictionary *optionsRequest = [RCTConvert NSDictionary:options[@"speechRecognitionRequest"]];
-  NSNumber *optionsRequestAudioSessionDataSourceID = [RCTConvert NSNumber:optionsRequest[@"audioSessionDataSourceID"]];
   NSArray *optionsRequestContextualStrings = [RCTConvert NSArray:optionsRequest[@"contextualStrings"]];
   NSString *optionsRequestInteractionIdentifier = [RCTConvert NSString:optionsRequest[@"interactionIdentifier"]];
-  NSInteger optionsRequestTaskHint = [RCTConvert NSInteger:optionsRequest[@"taskHint"]];
-  BOOL optionsRequestShouldReportPartialResults = [RCTConvert BOOL:optionsRequest[@"shouldReportPartialResults"]];
   AVAudioEngine *audioEngine = [[AVAudioEngine alloc] init];
   AVAudioInputNode *audioInputNode = audioEngine.inputNode;
   AVAudioFormat *audioFormat = [audioInputNode outputFormatForBus:0];
@@ -59,9 +56,11 @@ RCT_EXPORT_METHOD(start:(NSString *)id options:(NSDictionary *)options) {
   [audioSession setMode:AVAudioSessionModeMeasurement error:&error];
   [audioSession setActive:YES withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:&error];
 
-  if (optionsRequestAudioSessionDataSourceID != nil) {
+  if (optionsRequest[@"audioSessionDataSourceID"] != [NSNull null]) {
+    NSNumber *dataSourceID = [RCTConvert NSNumber:optionsRequest[@"audioSessionDataSourceID"]];
+
     for (AVAudioSessionDataSourceDescription *inputDataSource in audioSession.inputDataSources) {
-      if (inputDataSource.dataSourceID == optionsRequestAudioSessionDataSourceID) {
+      if (inputDataSource.dataSourceID == dataSourceID) {
         [audioSession setInputDataSource:inputDataSource error:&error];
         break;
       }
@@ -70,8 +69,16 @@ RCT_EXPORT_METHOD(start:(NSString *)id options:(NSDictionary *)options) {
 
   speechRecognitionRequest.contextualStrings = optionsRequestContextualStrings;
   speechRecognitionRequest.interactionIdentifier = optionsRequestInteractionIdentifier;
-  speechRecognitionRequest.shouldReportPartialResults = optionsRequestShouldReportPartialResults;
-  speechRecognitionRequest.taskHint = (SFSpeechRecognitionTaskHint) optionsRequestTaskHint;
+
+  if (optionsRequest[@"shouldReportPartialResults"] != [NSNull null]) {
+    BOOL shouldReportPartialResults = [RCTConvert BOOL:optionsRequest[@"shouldReportPartialResults"]];
+    speechRecognitionRequest.shouldReportPartialResults = shouldReportPartialResults;
+  }
+
+  if (optionsRequest[@"taskHint"] != [NSNull null]) {
+    NSInteger taskHint = [RCTConvert NSInteger:optionsRequest[@"taskHint"]];
+    speechRecognitionRequest.taskHint = taskHint;
+  }
 
   SFSpeechRecognitionTask *speechRecognitionTask = [speechRecognizer recognitionTaskWithRequest:speechRecognitionRequest resultHandler:^(SFSpeechRecognitionResult *speechRecognitionResult, NSError *speechRecognitionError) {
     if (speechRecognitionError && !self.skipError) {
@@ -149,15 +156,15 @@ RCT_EXPORT_METHOD(start:(NSString *)id options:(NSDictionary *)options) {
   AVAudioSession *audioSession = [AVAudioSession sharedInstance];
   AVAudioEngine *audioEngine = self.audioEngines[id];
   SFSpeechAudioBufferRecognitionRequest *speechRecognitionRequest = self.speechRecognitionRequests[id];
-  
+
   [speechRecognitionRequest endAudio];
   [audioSession setActive:NO error:nil];
-  
+
   if (audioEngine.isRunning) {
     [audioEngine stop];
     [audioEngine.inputNode removeTapOnBus:0];
   }
-  
+
   [self.audioEngines removeObjectForKey:id];
   [self.speechRecognitionRequests removeObjectForKey:id];
   [self.speechRecognitionTasks removeObjectForKey:id];
