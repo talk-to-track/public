@@ -1,7 +1,7 @@
 {
   "name": "@talk-to-track/react-native_apple_sf-speech-recognizer_recognition-task_audio-buffer",
   "description": "React native speech recognizer recognition task with audio buffer",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "Talk to Track",
   "bugs": {
     "url": "https://github.com/talk-to-track/public/issues"
