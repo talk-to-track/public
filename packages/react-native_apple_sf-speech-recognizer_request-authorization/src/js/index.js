@@ -3,6 +3,8 @@
 import type { SFSpeechRecognizerAuthorizationStatus } from '@talk-to-track/js-apple-dev';
 import { NativeModules } from 'react-native';
 
-export default (cb: (err: ?Error, status: ?SFSpeechRecognizerAuthorizationStatus) => void) => (
+type Callback = (err: ?Error, status: ?SFSpeechRecognizerAuthorizationStatus) => void;
+
+export default (cb: Callback) => (
   NativeModules.AppleSFSpeechRecognizerRequestAuthorization.run(cb)
 );

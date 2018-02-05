@@ -2,6 +2,8 @@
 
 import { NativeModules } from 'react-native';
 
-export default (cb: (err: ?Error, hasPermission: ?boolean) => void) => (
+type Callback = (err: ?Error, hasPermission: ?boolean) => void;
+
+export default (cb: Callback) => (
   NativeModules.AppleAVAudioSessionRecordPermission.run(cb)
 );

@@ -3,13 +3,16 @@
 import type { SFSpeechRecognitionResult, SFSpeechAudioBufferRecognitionRequest } from '@talk-to-track/js-apple-dev';
 import { NativeEventEmitter, NativeModules } from 'react-native';
 
+type CallbackResult = (SFSpeechRecognitionResult) => void;
+type CallbackError = (Error) => void;
+
 const module = NativeModules.AppleSFSpeechRecognizerRecognitionTaskAudioBuffer;
 
 export default (
   id: string,
   req: SFSpeechAudioBufferRecognitionRequest,
-  cbResult: (SFSpeechRecognitionResult) => void,
-  cbError: (Error) => void,
+  cbResult: CallbackResult,
+  cbError: CallbackError,
 ) => {
   const emitter = new NativeEventEmitter(module);
   let errorListener;

@@ -2,6 +2,8 @@
 
 import { NativeModules } from 'react-native';
 
-export default (id: string, cb: (?Error) => void) => (
+type Callback = (?Error) => void;
+
+export default (id: string, cb: Callback) => (
   NativeModules.AppleSFSpeechRecognizerRecognitionTaskAudioBuffer.finish(id, cb)
 );
