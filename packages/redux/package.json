@@ -1,7 +1,7 @@
 {
   "name": "@talk-to-track/redux",
   "description": "Talk to Track state management in redux",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "author": "Talk to Track",
   "ava": {
     "require": [
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@most/create": "^2.0.0",
-    "@talk-to-track/js-apple-dev": "1.2.0",
+    "@talk-to-track/js-apple-dev": "1.2.1",
     "immutable": "^4.0.0-rc.9",
     "lodash": "^4.0.0",
     "most": "^1.7.0",
@@ -34,7 +34,7 @@
     "@babel/preset-stage-0": "7.0.0-beta.39",
     "@babel/register": "7.0.0-beta.39",
     "@talk-to-track/eslint-config-ttt": "1.2.0",
-    "@talk-to-track/js-apple-dev": "1.2.0",
+    "@talk-to-track/js-apple-dev": "1.2.1",
     "ava": "1.0.0-beta.1",
     "babel-eslint": "8.2.1",
     "eslint": "4.16.0",
