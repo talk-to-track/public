@@ -1,9 +1,9 @@
 // @flow
 
-import type { ServiceFoodMatch } from './ServiceFoodMatch';
-import type { ServiceFoods } from './ServiceFoods';
+import type { ServiceFood } from './ServiceFood';
+import type { ServiceEntityRecognitionResponse } from './ServiceEntityRecognitionResponse';
 
-export type ServiceData = {
-  foodMatches: ServiceFoodMatch[],
-  foods: ServiceFoods,
-};
+export type ServiceData = {|
+  foods?: { [string]: ServiceFood },
+  matches: [RegExp, ServiceEntityRecognitionResponse][],
+|};

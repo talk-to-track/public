@@ -13,12 +13,12 @@ import {
   zip as mostZip,
 } from 'most';
 
-import actionMatchFood from '../../actions/match-food';
+import actionEntityRecognitionResult from '../../actions/entity-recognition-result';
 import FINALIZE_SPEECH_RECOGNITION from '../../constants/finalize-speech-recognition';
 import getActionSetSpeechRecognitionText from '../../observables/action-set-speech-recognition-text';
 import getIsTracking from '../../observables/is-tracking';
-import type { EpicOptionsMatchFood as Options } from '../../types/EpicOptionsMatchFood';
-import serviceMatchFood from '../../services/match-food';
+import type { EpicOptionsMatch as Options } from '../../types/EpicOptionsMatch';
+import serviceRecognizeEntities from '../../services/recognize-entities';
 
 export default (opts: Options, action$: any) => {
   const isTracking$ = getIsTracking(action$);
@@ -50,32 +50,28 @@ export default (opts: Options, action$: any) => {
     speechRecognitionText$,
   );
 
-  const foodMatchReq$ = mostZip(
+  const entityRecognitionRequest$ = mostZip(
     (index, text) => ({ index, text }),
     finalSpeechRecognitionIndex$,
     finalSpeechRecognitionText$,
   );
 
-  const foodMatchRes$ = mostJoin(mostMap(
-    foodMatchRequest => mostFromPromise(new Promise(resolve => (
-      serviceMatchFood(
-        opts.serviceData,
-        foodMatchRequest.text,
-        (err, result) => {
-          if (result) {
-            resolve({
-              index: foodMatchRequest.index,
-              result,
-            });
-          }
-        },
-      )
+  const entityRecognitionResult$ = mostJoin(mostMap(
+    req => mostFromPromise(new Promise(resolve => (
+      serviceRecognizeEntities(opts.serviceData, req.text, (err, res) => {
+        if (res) {
+          resolve({
+            index: req.index,
+            response: res,
+          });
+        }
+      })
     ))),
-    foodMatchReq$,
+    entityRecognitionRequest$,
   ));
 
   return mostMap(
-    actionMatchFood,
-    foodMatchRes$,
+    actionEntityRecognitionResult,
+    entityRecognitionResult$,
   );
 };
