@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/talk-to-track/public/tree/master/packages/redux/compare/@talk-to-track/redux@2.0.0...@talk-to-track/redux@2.1.0) (2018-02-07)
+
+
+### Features
+
+* add convenience request-stop-editing action ([e2665b0](https://github.com/talk-to-track/public/tree/master/packages/redux/commit/e2665b0))
+
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/talk-to-track/public/tree/master/packages/redux/compare/@talk-to-track/redux@1.2.0...@talk-to-track/redux@2.0.0) (2018-02-07)
 
