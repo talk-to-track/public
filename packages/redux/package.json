@@ -3,6 +3,12 @@
   "description": "Talk to Track state management in redux",
   "version": "1.2.0",
   "author": "Talk to Track",
+  "ava": {
+    "require": [
+      "@babel/polyfill",
+      "@babel/register"
+    ]
+  },
   "bugs": {
     "url": "https://github.com/talk-to-track/public/issues"
   },
@@ -21,7 +27,15 @@
     "rxjs": "^5.0.0"
   },
   "devDependencies": {
+    "@babel/core": "7.0.0-beta.39",
+    "@babel/polyfill": "7.0.0-beta.39",
+    "@babel/preset-env": "7.0.0-beta.39",
+    "@babel/preset-flow": "7.0.0-beta.39",
+    "@babel/preset-stage-0": "7.0.0-beta.39",
+    "@babel/register": "7.0.0-beta.39",
     "@talk-to-track/eslint-config-ttt": "1.2.0",
+    "@talk-to-track/js-apple-dev": "1.2.0",
+    "ava": "1.0.0-beta.1",
     "babel-eslint": "8.2.1",
     "eslint": "4.16.0",
     "eslint-config-airbnb": "16.1.0",
@@ -54,10 +68,11 @@
   },
   "scripts": {
     "audit": "nsp check",
-    "check": "npm-run-all --parallel audit fixpack lint typecheck",
+    "check": "npm-run-all --parallel audit fixpack lint test",
     "fixpack": "fixpack",
     "lint": "eslint . --fix",
     "outdated": "ncu",
+    "test": "ava",
     "typecheck": "flow check"
   }
 }
