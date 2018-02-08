@@ -5,6 +5,7 @@ import FINALIZE_SPEECH_RECOGNITION from '../constants/finalize-speech-recognitio
 import ENTITY_RECOGNITION_RESULT from '../constants/entity-recognition-result';
 import SET_DIET_TOTAL_MATCH_NUTRITION_DATA from '../constants/set-diet-total-match-nutrition-data';
 import SET_IS_EDITING from '../constants/set-is-editing';
+import SET_MATCH from '../constants/set-match';
 import SET_PERMISSION from '../constants/set-permission';
 import SET_SPEECH_RECOGNITION_TEXT from '../constants/set-speech-recognition-text';
 import START_RECORDING from '../constants/start-recording';
@@ -56,6 +57,13 @@ export default (state: any = createState(), action: any) => {
       return state.set('totalNutritionData', action.payload);
     case SET_IS_EDITING:
       return state.set('isEditing', action.payload);
+    case SET_MATCH: {
+      const match = action.payload;
+      const resultIndex = match.getIn(['result', 'index']);
+      const segmentIndex = match.getIn(['segment', 'index']);
+      const segmentValue = match.getIn(['segment', 'value']);
+      return state.setIn(['finalResults', resultIndex, 'segments', segmentIndex], segmentValue);
+    }
     case SET_PERMISSION:
       return state.set('hasPermission', action.payload);
     case SET_SPEECH_RECOGNITION_TEXT: {

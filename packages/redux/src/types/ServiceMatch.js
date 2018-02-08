@@ -2,4 +2,6 @@
 
 import type { ServiceMatchDiet } from './ServiceMatchDiet';
 
-export type ServiceMatch = ServiceMatchDiet;
+export type ServiceMatch = (
+  | ServiceMatchDiet
+);

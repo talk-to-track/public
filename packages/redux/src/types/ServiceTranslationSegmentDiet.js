@@ -5,7 +5,5 @@ import type { ServiceTranslationSegmentTypeDiet } from './ServiceTranslationSegm
 
 export type ServiceTranslationSegmentDiet = {|
   type: ServiceTranslationSegmentTypeDiet,
-  value: {|
-    foodPortions: ServiceFoodPortion[],
-  |},
+  value: {| foodPortion: ServiceFoodPortion |},
 |};

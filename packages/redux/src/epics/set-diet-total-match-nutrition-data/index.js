@@ -41,9 +41,9 @@ export default (action$: any) => {
         return state.clear();
       }
 
-      const resultIndex = dietMatchNutritionData.value.result.index;
-      const segmentIndex = dietMatchNutritionData.value.segment.index;
-      const foodNutritionData = dietMatchNutritionData.value.segment.value.nutritionData;
+      const resultIndex = dietMatchNutritionData.value.getIn(['result', 'index']);
+      const segmentIndex = dietMatchNutritionData.value.getIn(['segment', 'index']);
+      const foodNutritionData = dietMatchNutritionData.value.getIn(['segment', 'value', 'nutritionData']);
 
       return state.update(
         resultIndex,

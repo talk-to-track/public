@@ -1,28 +1,30 @@
 // @flow
 
+import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { combine as mostCombine, filter as mostFilter, map as mostMap } from 'most';
 import actionSetDietMatchNutritionData from '../../actions/set-diet-match-nutrition-data';
-import SET_DIET_MATCH from '../../constants/set-diet-match';
 import SET_FOODS from '../../constants/set-foods';
+import SET_MATCH from '../../constants/set-match';
 import addFoodNutritionData from '../../immutable/operations/add-food-nutrition-data';
 import ImmutableFoodNutritionData from '../../immutable/structures/FoodNutritionData';
-import type { ServiceFoodPortion } from '../../types/ServiceFoodPortion';
+import { SERVICE_TRANSLATION_SEGMENT_TYPE_DIET } from '../../types/ServiceTranslationSegmentType';
 
 const calculate = (
   foods: any,
-  foodPortions: ServiceFoodPortion[],
+  foodPortions: any,
   foodNutritionData: any = new ImmutableFoodNutritionData(),
   multiplier: number = 1,
 ) => {
   let nextFoodNutritionData = foodNutritionData;
 
   foodPortions.forEach((foodPortion) => {
-    const nextMultiplier = multiplier * foodPortion.qty;
+    const nextMultiplier = multiplier * foodPortion.get('qty');
+    const foodId = foodPortion.get('foodID');
 
-    if (foodPortion.foodPortions) {
+    if (foodPortion.get('foodPortions')) {
       nextFoodNutritionData = calculate(
         foods,
-        foodPortion.foodPortions,
+        foodPortion.get('foodPortions'),
         nextFoodNutritionData,
         nextMultiplier,
       );
@@ -30,7 +32,7 @@ const calculate = (
 
     nextFoodNutritionData = addFoodNutritionData(
       nextFoodNutritionData,
-      foods.getIn([`${foodPortion.foodID}`, 'nutriValues'], new ImmutableFoodNutritionData()),
+      foods.getIn([`${foodId}`, 'nutriValues'], new ImmutableFoodNutritionData()),
       nextMultiplier,
     );
   });
@@ -50,25 +52,28 @@ export default (action$: any) => {
   const dietMatch$ = mostMap(
     action => action.payload,
     mostFilter(
-      action => action.type === SET_DIET_MATCH,
+      action => (
+        action.type === SET_MATCH &&
+        action.payload.getIn(['segment', 'value', 'type']) === SERVICE_TRANSLATION_SEGMENT_TYPE_DIET
+      ),
       action$,
     ),
   );
 
   const dietMatchNutritionData$ = mostCombine(
     (dietMatch, foods) => {
-      const { foodPortions } = dietMatch.segment.value.value;
-      const nutritionData = calculate(foods, foodPortions);
+      const foodPortion = dietMatch.getIn(['segment', 'value', 'value', 'foodPortion']);
+      const nutritionData = calculate(foods, new ImmutableList([foodPortion]));
 
-      return {
-        result: {
-          index: dietMatch.result.index,
-        },
+      return new ImmutableMap({
+        result: new ImmutableMap({
+          index: dietMatch.getIn(['result', 'index']),
+        }),
         segment: {
-          index: dietMatch.segment.index,
-          value: { nutritionData },
+          index: dietMatch.getIn(['segment', 'index']),
+          value: new ImmutableMap({ nutritionData }),
         },
-      };
+      });
     },
     dietMatch$,
     foods$,

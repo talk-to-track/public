@@ -1,5 +1,7 @@
 // @flow
 
+import { fromJS as immutableFromJS } from 'immutable';
+
 import {
   filter as mostFilter,
   join as mostJoin,
@@ -8,9 +10,8 @@ import {
   mergeArray as mostMergeArray,
 } from 'most';
 
-import actionSetDietMatch from '../../actions/set-diet-match';
+import actionSetMatch from '../../actions/set-match';
 import ENTITY_RECOGNITION_RESULT from '../../constants/entity-recognition-result';
-import { SERVICE_TRANSLATION_SEGMENT_TYPE_DIET } from '../../types/ServiceTranslationSegmentType';
 
 export default (action$: any) => {
   const result$ = mostMap(
@@ -21,25 +22,23 @@ export default (action$: any) => {
     ),
   );
 
-  const dietMatch$$ = mostMap(
+  const match$$ = mostMap(
     (result) => {
-      const dietMatches = [];
+      const matches = [];
 
       if (result.response.translations.length > 0) {
         result.response.translations[0].segments.forEach((segment, i) => {
-          if (segment.type === SERVICE_TRANSLATION_SEGMENT_TYPE_DIET) {
-            dietMatches.push(mostJust(actionSetDietMatch({
-              result: { index: result.index },
-              segment: { index: i, value: segment },
-            })));
-          }
+          matches.push(mostJust(actionSetMatch(immutableFromJS({
+            result: { index: result.index },
+            segment: { index: i, value: segment },
+          }))));
         });
       }
 
-      return mostMergeArray(dietMatches);
+      return mostMergeArray(matches);
     },
     result$,
   );
 
-  return mostJoin(dietMatch$$);
+  return mostJoin(match$$);
 };

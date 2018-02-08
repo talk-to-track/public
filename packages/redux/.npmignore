@@ -1,4 +1,6 @@
 *.log
 .eslintignore
-.eslintrc.json
-.gitattributes
+.eslintrc
+.flowconfig
+CHANGELOG.md
+test
