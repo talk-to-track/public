@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/talk-to-track/public/tree/master/packages/redux/compare/@talk-to-track/redux@2.1.0...@talk-to-track/redux@3.0.0) (2018-02-08)
+
+
+### Features
+
+* add ability to increment/decrement quantity in a diet match ([d1a2ec9](https://github.com/talk-to-track/public/tree/master/packages/redux/commit/d1a2ec9))
+
+
+### BREAKING CHANGES
+
+* This modifies the shape of diet translation segment to return a single food portion rather than an array of food portions
+
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/talk-to-track/public/tree/master/packages/redux/compare/@talk-to-track/redux@2.0.0...@talk-to-track/redux@2.1.0) (2018-02-07)
 
