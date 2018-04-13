@@ -1,0 +1,88 @@
+{
+  "name": "@talk-to-track/graphql",
+  "description": "Talk to Track graphql",
+  "version": "3.0.0",
+  "author": "Talk to Track",
+  "ava": {
+    "require": [
+      "@babel/polyfill",
+      "@babel/register"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/talk-to-track/public/issues"
+  },
+  "dependencies": {
+    "async": "2.6.0",
+    "graphql": "0.13.1",
+    "graphql-tag": "2.8.0",
+    "graphql-tools": "2.21.0",
+    "node-fetch": "2.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.0.0-beta.39",
+    "@babel/node": "7.0.0-beta.40",
+    "@babel/polyfill": "7.0.0-beta.39",
+    "@babel/preset-env": "7.0.0-beta.39",
+    "@babel/preset-flow": "7.0.0-beta.39",
+    "@babel/preset-stage-0": "7.0.0-beta.39",
+    "@babel/register": "7.0.0-beta.39",
+    "@talk-to-track/eslint-config-ttt": "1.2.0",
+    "apollo-cache-inmemory": "1.1.9",
+    "apollo-client": "2.2.5",
+    "apollo-codegen": "0.19.0",
+    "apollo-link-schema": "1.0.6",
+    "apollo-server-express": "1.3.2",
+    "ava": "1.0.0-beta.1",
+    "babel-eslint": "8.2.1",
+    "babel-plugin-graphql-tag": "1.5.0",
+    "body-parser": "1.18.2",
+    "eslint": "4.16.0",
+    "eslint-config-airbnb": "16.1.0",
+    "eslint-plugin-babel": "4.1.2",
+    "eslint-plugin-flowtype": "2.42.0",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-jsx-a11y": "6.0.3",
+    "eslint-plugin-react": "7.6.0",
+    "express": "4.16.2",
+    "fixpack": "2.3.1",
+    "flow-bin": "0.66.0",
+    "fs-extra": "5.0.0",
+    "get-port": "3.2.0",
+    "npm-check-updates": "2.14.0",
+    "npm-run-all": "4.1.2",
+    "nsp": "3.1.0",
+    "nyc": "11.5.0",
+    "opn": "5.2.0"
+  },
+  "homepage": "https://github.com/talk-to-track/public/tree/master/packages/graphql",
+  "keywords": [
+    "api",
+    "graphql",
+    "talk",
+    "to",
+    "track"
+  ],
+  "license": "UNLICENSED",
+  "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/talk-to-track/public/tree/master/packages/graphql"
+  },
+  "scripts": {
+    "audit": "nsp check",
+    "build": "babel-node build && npm run codegen",
+    "check": "npm-run-all --parallel audit build fixpack lint test typecheck && npm-run-all --parallel coverage",
+    "codegen": "apollo-codegen generate src/code/queries/**/*.js --schema dist/schema.json --target flow --output dist/queries.flow.js",
+    "coverage": "nyc check-coverage",
+    "fixpack": "fixpack",
+    "gui": "babel-node src/code/gui",
+    "lint": "eslint . --fix",
+    "outdated": "ncu",
+    "test": "ava",
+    "typecheck": "flow check"
+  }
+}

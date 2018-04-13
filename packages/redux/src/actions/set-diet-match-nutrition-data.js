@@ -1,6 +1,6 @@
 // @flow
 
 import type from '../constants/set-diet-match-nutrition-data';
-import type { DietMatchNutritionData } from '../types/FoodNutritionData';
+import type { ImmutableFoodNutritionData } from '../types/ImmutableFoodNutritionData';
 
-export default (payload: DietMatchNutritionData) => ({ type, payload });
+export default (payload: ImmutableFoodNutritionData) => ({ type, payload });

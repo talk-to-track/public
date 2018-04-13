@@ -17,8 +17,8 @@ import actionEntityRecognitionResult from '../../actions/entity-recognition-resu
 import FINALIZE_SPEECH_RECOGNITION from '../../constants/finalize-speech-recognition';
 import getActionSetSpeechRecognitionText from '../../observables/action-set-speech-recognition-text';
 import getIsTracking from '../../observables/is-tracking';
-import type { EpicOptionsMatch as Options } from '../../types/EpicOptionsMatch';
 import serviceRecognizeEntities from '../../services/recognize-entities';
+import type { EpicOptionsMatch as Options } from '../../types/EpicOptionsMatch';
 
 export default (opts: Options, action$: any) => {
   const isTracking$ = getIsTracking(action$);

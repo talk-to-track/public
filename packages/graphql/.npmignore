@@ -1,0 +1,8 @@
+*.log
+.eslintignore
+.eslintrc
+.flowconfig
+.nyc_output
+build
+CHANGELOG.md
+test

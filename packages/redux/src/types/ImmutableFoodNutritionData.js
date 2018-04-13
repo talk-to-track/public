@@ -2,7 +2,7 @@
 
 import type { RecordInstance as ImmutableRecordInstance } from 'immutable';
 
-export type ImmutableServiceFoodNutritionData = ImmutableRecordInstance<{|
+export type ImmutableFoodNutritionData = ImmutableRecordInstance<{|
   calcium?: number,
   calories?: number,
   carbs?: number,

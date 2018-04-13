@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    ["graphql-tag"],
+  ],
+  "presets": [
+    ["@babel/env"],
+    ["@babel/flow"],
+    ["@babel/stage-0"]
+  ]
+}

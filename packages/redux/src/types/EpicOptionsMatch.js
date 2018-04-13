@@ -2,4 +2,6 @@
 
 import type { ServiceData } from './ServiceData';
 
-export type EpicOptionsMatch = ServiceData;
+export type EpicOptionsMatch = {
+  serviceData: ServiceData,
+};
