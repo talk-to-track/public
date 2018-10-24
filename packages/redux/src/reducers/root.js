@@ -39,7 +39,7 @@ export default (state: any = createState(), action: any) => {
       return state
         .update('finalResults', results => (
           results.push(createFinalResult({
-            text: state.get('partialResult'),
+            text: state.getIn(['partialResult', 'text']),
           }))
         ))
         .set('partialResult', createPartialResult());

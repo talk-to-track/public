@@ -17,44 +17,8 @@ import actionEntityRecognitionResult from '../../actions/entity-recognition-resu
 import FINALIZE_SPEECH_RECOGNITION from '../../constants/finalize-speech-recognition';
 import getActionSetSpeechRecognitionText from '../../observables/action-set-speech-recognition-text';
 import getIsTracking from '../../observables/is-tracking';
-import serviceRecognizeEntities from '../../services/recognize-entities';
+import serviceRecognize from '../../services/recognize';
 import type { EpicOptionsMatch as Options } from '../../types/EpicOptionsMatch';
-
-fetch('https://development-api.talktotrack.com/v/1/customer', {
-  mode: 'cors',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    query: `{
-      recognize(authAccessToken: "k3yb04rd_cat", text: "yogurt") {
-      	result {
-          alternatives {
-            matches {
-              __typename
-              ... on FoodServingMatch {
-                foodMatch {
-                  food {
-                    name
-                  }
-                }
-                quantityMatch {
-                  quantity {
-                    magnitude
-                  }
-                }
-                unitMatch {
-                  unit
-                }
-              }
-            }
-          }
-        }
-      }
-    }`,
-  }),
-  method: 'POST',
-}).then(res => { console.log(res); return res.json(); })
-  .then(res => console.log(res))
-  .catch(err => console.error('ERROR:', err));
 
 export default (opts: Options, action$: any) => {
   const isTracking$ = getIsTracking(action$);
@@ -94,7 +58,7 @@ export default (opts: Options, action$: any) => {
 
   const entityRecognitionResult$ = mostJoin(mostMap(
     req => mostFromPromise(new Promise(resolve => (
-      serviceRecognizeEntities(opts.serviceData, req.text, (err, res) => {
+      serviceRecognize({}, req.text, (err, res) => {
         if (res) {
           resolve({
             index: req.index,
