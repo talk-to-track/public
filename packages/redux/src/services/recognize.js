@@ -12,7 +12,31 @@ const graphqlRequest = (text: string) => (
           result {
             alternatives {
               matches {
+                ... on CardioWorkoutSetsMatch {
+                  __typename
+                  setMatch {
+                    distanceMatch {
+                      distance {
+                        magnitude
+                        unit
+                      }
+                    }
+                    durationMatch {
+                      duration {
+                        magnitude
+                        unit
+                      }
+                    }
+                    exerciseMatch {
+                      exercise {
+                        id
+                        name
+                      }
+                    }
+                  }
+                }
                 ... on FoodServingMatch {
+                  __typename
                   foodMatch {
                     food {
                       name
@@ -25,6 +49,26 @@ const graphqlRequest = (text: string) => (
                   }
                   unitMatch {
                     unit
+                  }
+                }
+                ... on StrengthWorkoutSetsMatch {
+                  __typename
+                  setMatch {
+                    exerciseMatch {
+                      exercise {
+                        id
+                        name
+                      }
+                    }
+                    repetitionMatch {
+                      repetition
+                    }
+                    weightMatch {
+                      weight {
+                        magnitude
+                        unit
+                      }
+                    }
                   }
                 }
               }
@@ -50,10 +94,31 @@ export default (opts: any, text: string, cb: Callback) => (
 
         if (alternative) {
           const match = alternative.matches[0];
-          const foodName = match.foodMatch.food.name;
-          const quantity = match.quantityMatch.quantity.magnitude;
-          const { unit } = match.unitMatch;
-          textMatch = `${quantity}, ${unit}, ${foodName}`;
+
+          if (match.__typename === 'CardioWorkoutSetsMatch') {
+            textMatch = '';
+            const { setMatch } = match;
+            const { exercise } = setMatch.exerciseMatch;
+            const { distance } = setMatch.distanceMatch;
+            const { duration } = setMatch.durationMatch;
+            if (distance) textMatch += `${distance.magnitude} ${distance.unit}, `;
+            if (duration) textMatch += `${duration.magnitude} ${duration.unit}, `;
+            textMatch += exercise.name;
+          } else if (match.__typename === 'FoodServingMatch') {
+            const { food } = match.foodMatch;
+            const { quantity } = match.quantityMatch;
+            const { unit } = match.unitMatch;
+            textMatch = `${quantity.magnitude} ${unit}, ${food.name}`;
+          } else if (match.__typename === 'StrengthWorkoutSetsMatch') {
+            textMatch = '';
+            const { setMatch } = match;
+            const { exercise } = setMatch.exerciseMatch;
+            const { repetition } = setMatch.repetitionMatch;
+            const { weight } = setMatch.weightMatch;
+            if (repetition) textMatch += `${repetition} REP, `;
+            if (weight) textMatch += `${weight.magnitude} ${weight.unit}, `;
+            textMatch += exercise.name;
+          }
         }
       }
 
