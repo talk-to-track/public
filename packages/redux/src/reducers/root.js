@@ -1,6 +1,7 @@
 // @flow
 
 import { fromJS as immutableFromJS, List as ImmutableList, Record as createImmutableRecord } from 'immutable';
+import CLEAR from '../constants/clear';
 import FINALIZE_SPEECH_RECOGNITION from '../constants/finalize-speech-recognition';
 import ENTITY_RECOGNITION_RESULT from '../constants/entity-recognition-result';
 import SET_DIET_TOTAL_MATCH_NUTRITION_DATA from '../constants/set-diet-total-match-nutrition-data';
@@ -24,6 +25,7 @@ const createFinalResult = createImmutableRecord({
 });
 
 const createState = createImmutableRecord({
+  canClear: false,
   finalResults: new ImmutableList(),
   hasPermission: null,
   isEditing: false,
@@ -35,6 +37,10 @@ const createState = createImmutableRecord({
 
 export default (state: any = createState(), action: any) => {
   switch (action.type) {
+    case CLEAR:
+      return state
+        .set('canClear', false)
+        .set('finalResults', new ImmutableList());
     case FINALIZE_SPEECH_RECOGNITION: {
       return state
         .update('finalResults', results => (
@@ -42,7 +48,8 @@ export default (state: any = createState(), action: any) => {
             text: state.getIn(['partialResult', 'text']),
           }))
         ))
-        .set('partialResult', createPartialResult());
+        .set('partialResult', createPartialResult())
+        .set('canClear', !state.get('isRecording') && state.get('finalResults').size > 0);
     }
     case ENTITY_RECOGNITION_RESULT: {
       const { index, response } = action.payload;
@@ -70,11 +77,15 @@ export default (state: any = createState(), action: any) => {
       return state.setIn(['partialResult', 'text'], action.payload);
     }
     case START_RECORDING:
-      return state.set('isRecording', true);
+      return state
+        .set('canClear', false)
+        .set('isRecording', true);
     case START_TRACKING:
       return state.set('isTracking', true);
     case STOP_RECORDING:
-      return state.set('isRecording', false);
+      return state
+        .set('isRecording', false)
+        .set('canClear', state.get('finalResults').size > 0);
     case STOP_TRACKING:
       return state
         .set('finalResults', new ImmutableList())
