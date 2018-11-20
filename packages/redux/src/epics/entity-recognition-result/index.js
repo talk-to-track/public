@@ -1,11 +1,14 @@
 // @flow
 
 import {
+  constant as mostConstant,
   empty as mostEmpty,
   filter as mostFilter,
   fromPromise as mostFromPromise,
   join as mostJoin,
+  just as mostJust,
   map as mostMap,
+  merge as mostMerge,
   multicast as mostMulticast,
   sample as mostSample,
   scan as mostScan,
@@ -14,6 +17,7 @@ import {
 } from 'most';
 
 import actionEntityRecognitionResult from '../../actions/entity-recognition-result';
+import CLEAR from '../../constants/clear';
 import FINALIZE_SPEECH_RECOGNITION from '../../constants/finalize-speech-recognition';
 import getActionSetSpeechRecognitionText from '../../observables/action-set-speech-recognition-text';
 import getIsTracking from '../../observables/is-tracking';
@@ -23,26 +27,39 @@ import type { EpicOptionsMatch as Options } from '../../types/EpicOptionsMatch';
 export default (opts: Options, action$: any) => {
   const isTracking$ = getIsTracking(action$);
 
-  const finalizeSpeechRecognition$ = mostFilter(
+  const indexOpIncrement$ = mostConstant('inc', mostFilter(
     action => action.type === FINALIZE_SPEECH_RECOGNITION,
     action$,
+  ));
+
+  const indexOpResetClear$ = mostFilter(
+    action => action.type === CLEAR,
+    action$,
   );
+
+  const indexOpResetStopTracking$ = mostSwitchLatest(mostMap(
+    isTracking => (isTracking ? mostEmpty() : mostJust()),
+    isTracking$,
+  ));
+
+  const indexOpReset$ = mostConstant('reset', mostMerge(
+    indexOpResetClear$,
+    indexOpResetStopTracking$,
+  ));
 
   const speechRecognitionText$ = mostMap(
     action => action.payload,
     getActionSetSpeechRecognitionText(action$),
   );
 
-  const finalSpeechRecognitionIndex$ = mostMulticast(mostFilter(
+  const finalSpeechRecognitionIndex$ = mostFilter(
     index => index >= 0,
-    mostSwitchLatest(mostMap(
-      isTracking => (!isTracking ?
-        mostEmpty() :
-        mostScan(index => index + 1, -1, finalizeSpeechRecognition$)
-      ),
-      isTracking$,
-    )),
-  ));
+    mostScan(
+      (index, op) => (op === 'inc' ? index + 1 : -1),
+      -1,
+      mostMerge(indexOpReset$, indexOpIncrement$),
+    ),
+  );
 
   const finalSpeechRecognitionText$ = mostSample(
     text => text,
