@@ -53,6 +53,9 @@ const graphqlRequest = (text: string) => (
                 }
                 ... on StrengthWorkoutSetsMatch {
                   __typename
+                  countMatch {
+                    count
+                  }
                   setMatch {
                     exerciseMatch {
                       exercise {
@@ -111,10 +114,12 @@ export default (opts: any, text: string, cb: Callback) => (
             textMatch = `${quantity.magnitude} ${unit}, ${food.name}`;
           } else if (match.__typename === 'StrengthWorkoutSetsMatch') {
             textMatch = '';
-            const { setMatch } = match;
+            const { countMatch, setMatch } = match;
+            const { count } = countMatch;
             const { exercise } = setMatch.exerciseMatch;
             const { repetition } = setMatch.repetitionMatch;
             const { weight } = setMatch.weightMatch;
+            if (count) textMatch += `${count} SET, `;
             if (repetition) textMatch += `${repetition} REP, `;
             if (weight) textMatch += `${weight.magnitude} ${weight.unit}, `;
             textMatch += exercise.name;
