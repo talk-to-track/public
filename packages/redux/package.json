@@ -1,7 +1,7 @@
 {
   "name": "@talk-to-track/redux",
   "description": "Talk to Track state management in redux",
-  "version": "4.3.0",
+  "version": "4.4.0",
   "author": "Talk to Track",
   "ava": {
     "require": [

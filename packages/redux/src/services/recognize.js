@@ -27,6 +27,7 @@ const graphqlRequest = (text: string) => (
                         unit
                       }
                     }
+                    energy
                     exerciseMatch {
                       exercise {
                         id
@@ -40,6 +41,12 @@ const graphqlRequest = (text: string) => (
                   foodMatch {
                     food {
                       name
+                      nutrients {
+                        carbohydrates
+                        energy
+                        fat
+                        protein
+                      }
                     }
                   }
                   quantityMatch {
@@ -57,6 +64,7 @@ const graphqlRequest = (text: string) => (
                     count
                   }
                   setMatch {
+                    energy
                     exerciseMatch {
                       exercise {
                         id
@@ -107,11 +115,17 @@ export default (opts: any, text: string, cb: Callback) => (
             if (distance) textMatch += `${distance.magnitude} ${distance.unit}, `;
             if (duration) textMatch += `${duration.magnitude} ${duration.unit}, `;
             textMatch += exercise.name;
+            textMatch += ` (${Math.round(setMatch.energy)} cals)`;
           } else if (match.__typename === 'FoodServingMatch') {
             const { food } = match.foodMatch;
+            const { nutrients } = food;
             const { quantity } = match.quantityMatch;
             const { unit } = match.unitMatch;
-            textMatch = `${quantity.magnitude} ${unit}, ${food.name}`;
+            textMatch = `${quantity.magnitude} ${unit}, ${food.name} (`;
+            textMatch += `${Math.round(nutrients.energy)} cals, `;
+            textMatch += `${Math.round(nutrients.protein)}g prot, `;
+            textMatch += `${Math.round(nutrients.fat)}g fat, `;
+            textMatch += `${Math.round(nutrients.carbohydrates)}g carbs)`;
           } else if (match.__typename === 'StrengthWorkoutSetsMatch') {
             textMatch = '';
             const { countMatch, setMatch } = match;
@@ -123,6 +137,7 @@ export default (opts: any, text: string, cb: Callback) => (
             if (repetition) textMatch += `${repetition} REP, `;
             if (weight) textMatch += `${weight.magnitude} ${weight.unit}, `;
             textMatch += exercise.name;
+            textMatch += ` (${Math.round(setMatch.energy)} cals)`;
           }
         }
       }
